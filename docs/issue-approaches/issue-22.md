@@ -31,10 +31,12 @@ Then:
 2. **`team up`**: create the shared volume + `cage-net-<team>` network, start each agent container
    (reusing #11 credential injection per container — no shared credential volume), print status.
 3. **`team status`**: table of name / container id / state / uptime / resource usage; flag stopped agents.
-4. **`team down`**: stop + remove containers, network, and (unless `--keep-volumes`) the shared
-   volume; `--force` skips confirmation.
-5. **Naming/collision (audit gap G-20)**: reuse the collision-resistant session-id scheme (#20) so
-   two teams (or a team + solo runs) on one host can't collide.
+4. **`team down`**: stop + remove containers and the network. Preserve the shared workspace volume
+   by default; remove it only with explicit `--remove-volumes`, with `--force` available to skip the
+   destructive confirmation.
+5. **Naming/collision (audit gap G-20)**: use the common runtime-name helper keyed by a
+   Cage-generated collision-resistant id, rather than deriving names from agent/team labels, so two
+   teams (or a team + solo runs) on one host cannot collide.
 6. **Resource multiplication (THREAT-TM-D-01/02)**: `up` prints aggregate limits and warns when the
    sum exceeds host memory.
 7. **`cage sync --team`** scope: define per D-3 or return an explicit unimplemented error.
@@ -49,7 +51,8 @@ Then:
 ## QA gate
 
 - Unit: schema validation, naming collisions, aggregate-limit warning.
-- Live: up→status→down leaves no containers/network/volume.
+- Live: up→status→down leaves no containers/network but preserves the workspace volume; a second
+  teardown with `--remove-volumes` removes that volume and leaves nothing.
 
 ## Risks & notes
 

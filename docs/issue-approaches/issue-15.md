@@ -21,7 +21,9 @@ path-traversal and hooks defenses at apply time.
 1. Extract diff (reuse #14).
 2. Interactive approval (`dialoguer`): per-file approve/skip; show file summary + hunks.
 3. `--auto` (explicit opt-in, CI): approve all **except** the guarded classes (see #17).
-4. Build a patch from approved files/hunks; apply via `git apply --whitespace=fix -` (stdin, no shell).
+4. Build a patch from approved files/hunks; validate with `git apply --check`, then apply the exact
+   approved bytes via plain `git apply -` (stdin, no shell). Do not normalize whitespace implicitly;
+   any future normalization must be an explicit opt-in whose transformed patch is previewed again.
 5. **Defenses at apply (SEC-ISSUE-001)**: reject `..`, absolute paths, and any `.git/hooks/**`
    (hooks defense L2/L3) before writing; nothing is applied outside the project dir.
 6. Print synced file count on completion.
@@ -39,11 +41,12 @@ fn apply(decisions: &[FileDecision], project: &Path) -> Result<AppliedSummary>;
 - No auto-apply without `--auto` → default is interactive; non-TTY without `--auto` → E-017 (exit 1).
 - `.git/hooks/**` never applied → apply-time reject test.
 - Writes outside project rejected → traversal test with `../` targets.
+- Applied content is byte-for-byte the approved patch → no implicit whitespace-fix behavior.
 
 ## QA gate
 
-- Unit: approval selection → patch subset; apply rejects traversal + hooks; metadata-only empty
-  file applies (carry `dfa7243`); synced-count correct.
+- Unit: approval selection → patch subset; apply rejects traversal + hooks; whitespace is preserved;
+  metadata-only empty file applies (carry `dfa7243`); synced-count correct.
 
 ## Risks & notes
 

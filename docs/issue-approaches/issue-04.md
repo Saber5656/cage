@@ -27,8 +27,8 @@ A buildable, testable, lint-clean crate skeleton so every later issue lands agai
    `tempfile`, `serde_json`) so #18's security tests have a home from day one.
 5. **Set MSRV**: edition 2024 requires Rust ≥ 1.85 — add `package.rust-version = "1.85"` and a CI
    job that checks the crate builds on that toolchain.
-6. CI workflow (push/PR per #3): `cargo fmt --check`, `cargo clippy --all-targets --all-features -D warnings`,
-   `cargo test --all-features`.
+6. CI workflow (push/PR per #3): `cargo fmt --check`,
+   `cargo clippy --all-targets --all-features -- -D warnings`, `cargo test --all-features`.
 
 ## Key decisions (defaults taken)
 
@@ -39,7 +39,7 @@ A buildable, testable, lint-clean crate skeleton so every later issue lands agai
 
 - `cargo test --all-features` green → skeleton compiles with placeholder tests.
 - `cargo fmt --all -- --check` green → `rustfmt.toml` + formatted skeleton.
-- `cargo clippy --all-targets --all-features` green → lint config + `-D warnings` in CI.
+- `cargo clippy --all-targets --all-features -- -D warnings` green → lint config + deny warnings in CI.
 - Crate metadata has description/license/repository → carried from legacy `Cargo.toml`.
 
 ## QA gate

@@ -25,10 +25,11 @@ that disables them.
 3. **Seccomp distribution (audit gap G-13)**: legacy ships `seccomp/default.json` but
    `SecurityPolicy::default()` sets `seccomp_profile: None`, so installed binaries get **no** seccomp.
    Fix: `include_str!` the profile into the binary, materialize to `$CAGE_HOME/seccomp/default.json`
-   on first run, and apply **by default**. Allow override via config/flag; allow explicit disable
-   only with a printed warning.
-4. **Profile validation**: parse the JSON and assert `defaultAction` present before passing
-   `--security-opt seccomp=…`; a broken profile is a clear startup error, not a runtime stack trace.
+   on first run, and apply **by default**. Config/flags may select only a named Cage-shipped,
+   validated profile; no `none`, `unconfined`, or disable setting exists.
+4. **Profile validation**: parse the JSON, assert the required `defaultAction` and restrictions, and
+   reject an unknown or invalid profile before passing `--security-opt seccomp=…`; a broken profile
+   is a clear startup error, not a runtime stack trace.
 
 ## API contract
 
@@ -47,7 +48,8 @@ impl SecurityPolicy { fn hardening_args(&self) -> Vec<String>; fn resource_args(
 
 ## QA gate
 
-- Unit: hardening arg order, resource defaults, seccomp present by default, disable-warns.
+- Unit: hardening arg order, resource defaults, seccomp present by default, and disable/unknown
+  profile requests are unavailable or rejected.
 - JSON validity of `seccomp/default.json` (also gated in CI by #18).
 
 ## Risks & notes

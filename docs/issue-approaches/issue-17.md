@@ -26,8 +26,11 @@ guard against oversized diffs.
 5. **`--auto` interaction (audit gap G-19)**: under `--auto`, sensitive-pattern and exec-bit changes
    are **skipped with a warning** by default, applied only with an extra opt-in
    (`--auto-include-sensitive`). Non-interactive **without** `--auto` still fails per E-017.
-6. **Large-diff thresholds (THREAT-AS-D-01/CE-D-02)**: configurable under `[sync]` (defaults e.g.
-   warn > 5 MB/file or > 500 files); state whether they block under `--auto`.
+6. **Large-diff thresholds (THREAT-AS-D-01/CE-D-02)**: configurable under `[sync]` (defaults: warn
+   above 5 MiB/file or 500 files). Interactive mode shows the measured size/count and requires an
+   extra confirmation. `--auto` fails closed above either threshold unless the caller also supplies
+   `--auto-allow-large-diff`; that flag acknowledges size only and does not bypass sensitive/exec
+   guards.
 
 ## Acceptance criteria → approach
 
@@ -35,10 +38,12 @@ guard against oversized diffs.
 - `--file` narrows as expected → intersection test.
 - Sensitive changes warn → pattern matcher + warning.
 - Executable sync needs confirmation → prompt (interactive) / skip-unless-opt-in (`--auto`).
+- Oversized diffs confirm interactively and block under `--auto` without the size-specific opt-in.
 
 ## QA gate
 
-- Unit: glob include/exclude, `--file` intersection, sensitive/exec detection, `--auto` skip behavior, size thresholds.
+- Unit: glob include/exclude, `--file` intersection, sensitive/exec detection, `--auto` skip behavior,
+  threshold boundaries, interactive confirmation, and fail-closed/opt-in large-diff behavior.
 
 ## Risks & notes
 

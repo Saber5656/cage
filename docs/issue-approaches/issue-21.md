@@ -17,10 +17,14 @@ Replace the three `not yet implemented` stubs with real behavior, with confirmat
 
 ## Approach
 
-1. **`cage config`**: `list` (effective merged config), `get <key>`, `set <key> <value>` (writes
-   global `~/.config/cage/cage.toml`), `edit` (`$EDITOR`), `validate`. Reuse #6's loader + validators.
-2. **`cage images`**: `list` (size/created), `pull <image>`, `remove <image>`, `prune`. `remove`/`prune`
-   **require confirmation** (`--yes`/`-y` to skip). Delegates to the runtime abstraction (#8).
+1. **`cage config`**: `list` and `get <key>` show effective merged values plus their source layer.
+   Mutating `set <key> <value>` and `edit` require exactly one of `--global` (writes
+   `~/.config/cage/cage.toml`) or `--local` (writes the project `cage.toml`), validate before an
+   atomic write, and report when the other layer still wins. Reuse #6's loader + validators.
+2. **`cage images`**: label every Cage-built image `io.cage.managed=true`; `list` shows managed
+   images with size/created, while `pull <image>` and `remove <image>` operate on explicit names.
+   `prune` first lists IDs with the positive Cage label and removes only those IDs—never delegate to
+   an unfiltered runtime-wide prune. `remove`/`prune` require confirmation (`--yes`/`-y` to skip).
 3. **`cage update`**: for pre-alpha, a no-op with guidance ("no releases yet; build from source")
    is acceptable per the issue — implement `--check` to report and otherwise print guidance. Full
    self-update is deferred to the release work (#23).
@@ -30,12 +34,15 @@ Replace the three `not yet implemented` stubs with real behavior, with confirmat
 
 - Stubs replaced with concrete behavior → per-subcommand impls.
 - `images remove`/`prune` need confirmation → prompt unless `--yes`.
+- Config mutations select a layer explicitly and reads identify the winning layer.
+- Image prune cannot remove unrelated runtime images → positive-label filtering + ID allowlist.
 - Pre-alpha `update` gives clear guidance → guidance path + `--check`.
 - Help matches behavior → derived help reviewed against docs.
 
 ## QA gate
 
-- Unit/`assert_cmd`: config get/set/list round-trip; images confirmation prompt; update guidance text.
+- Unit/`assert_cmd`: global/local config round-trip and project-shadow reporting; images confirmation
+  prompt; an unrelated dangling image survives prune; update guidance text.
 
 ## Risks & notes
 

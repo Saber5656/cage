@@ -22,9 +22,10 @@ Replace "works on the author's machine" with an explicit, tested support matrix 
    Desktop, Docker Engine, colima/OrbStack, Podman rootful/rootless) — each cell tested /
    best-effort / unsupported.
 2. **Smoke tests**: run→diff→sync on at least macOS + Docker Desktop and Linux + Docker Engine.
-3. **macOS specifics**: verify the socket blocklist catches the Docker Desktop symlink chain
-   (`/var/run/docker.sock` → `~/.docker/run/docker.sock`) and that canonicalization handles
-   `/tmp` → `/private/tmp` aliasing (legacy tests special-case this). Regression tests where feasible.
+3. **macOS specifics**: add mandatory regression tests proving the socket blocklist catches the
+   Docker Desktop symlink chain (`/var/run/docker.sock` → `~/.docker/run/docker.sock`) and path
+   canonicalization handles the in-scope `/tmp` → `/private/tmp` alias (legacy tests special-case
+   this). These are automated regression requirements, not optional manual checks.
 4. **WSL2 (Decision D-6)**: validate or explicitly mark unsupported for pre-alpha; document.
 5. **CI coverage limits**: GitHub Actions Linux runners exercise live Docker tests; macOS runners
    have no Docker, so macOS coverage is manual/unit-level — state this so "skipped" ≠ "passed".

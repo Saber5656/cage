@@ -25,8 +25,9 @@ public repo has no unattended, noisy, or cost-accruing runs while tests are inco
      pull_request:
    ```
 2. Strip any `schedule:` block carried from `cage-demo/security.yml` during migration.
-3. Add a tiny CI guard step (or a `deny.toml`/grep check) that fails if any workflow file
-   contains `schedule:` / `cron:`.
+3. Add `scripts/check-workflow-triggers.sh` (or an equivalent repository script) that parses each
+   workflow YAML file and rejects an `on.schedule` key. CI invokes the script by name, so the
+   prohibited trigger text is not embedded in a workflow and cannot make the guard match itself.
 
 ## Key decisions (defaults taken)
 
@@ -35,13 +36,13 @@ public repo has no unattended, noisy, or cost-accruing runs while tests are inco
 
 ## Acceptance criteria → approach
 
-- No `on.schedule` in any workflow → grep guard + review.
+- No `on.schedule` in any workflow → external YAML-aware guard + review.
 - `security.yml` has no weekly cron → covered by the migration strip in #18.
 - Valid YAML → `actionlint` (or a parse step) in CI.
 
 ## QA gate
 
-- `rg -n "schedule:|cron:" .github/workflows` → empty.
+- `scripts/check-workflow-triggers.sh` passes without finding a scheduled trigger.
 - `actionlint` passes.
 
 ## Risks & notes

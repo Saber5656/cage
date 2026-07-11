@@ -75,7 +75,7 @@ the issues in the third column and should be resolved before those issues start.
 | D-1 | Pre-alpha auth scope | (a) API-key only · (b) also OAuth/token-file injection | #25, #26 |
 | D-2 | `--with-ssh` / `--with-hooks` | (a) implement per spec · (b) remove + explicit "unsupported" error | #26 |
 | D-3 | Teams workspace model | (a) shared workspace + single team baseline · (b) per-agent workspace + shared dir excluded from sync | #22 |
-| D-4 | DinD daemon endpoint | (a) plain TCP on dedicated net · (b) TLS 2376 | #20 |
+| D-4 | DinD daemon endpoint | (a) plain TCP only with preventive network admission control · (b) TLS 2376 (required otherwise) | #20 |
 | D-5 | Release channel priority | order of `cargo install` / GitHub Releases / Homebrew; SBOM & attestation for first release | #23 |
 | D-6 | WSL2 pre-alpha status | validated vs explicitly unsupported | #28 |
 

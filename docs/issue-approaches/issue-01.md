@@ -13,8 +13,8 @@
 
 ## Goal
 
-Establish `/Users/takagiyasushi/dev/Cage` (→ `Saber5656/cage`) as the canonical working tree, and
-produce a written inventory of what migrates from `cage-demo` and what is deliberately excluded.
+Establish the repository root for `Saber5656/cage` as the canonical working tree, and produce a
+written inventory of what migrates from `cage-demo` and what is deliberately excluded.
 
 ## Approach
 
@@ -44,7 +44,7 @@ produce a written inventory of what migrates from `cage-demo` and what is delibe
 
 ## QA gate
 
-- `rg -n "schedule:|cron:"` over any migrated workflow returns nothing.
+- The external YAML-aware guard from #3 passes over `.github/workflows`.
 - Inventory reviewed against `cage-demo` tree so no source file is silently dropped.
 
 ## Risks & notes
