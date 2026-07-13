@@ -25,30 +25,30 @@ No legacy path is approved for `migrate-as-is`.
 | Legacy path | Classification | Destination / owner | Required review or change |
 |---|---|---|---|
 | `docs/PRD.md` | `migrate-with-changes` | `docs/`; #2 and each feature owner (#5–#29) | Reconcile audit addenda and remove local-only provenance before publication. |
-| `docs/architecture/architecture.md` | `migrate-with-changes` | `docs/architecture/`; #4, #8, #12, #19, #20, #28 | Verify module boundaries against the implementation delivered by #4–#13. |
-| `docs/architecture/tech-selection.md` | `migrate-with-changes` | `docs/architecture/`; #4, #8, #19 | Revalidate Rust/MSRV and Docker/Podman support claims. |
-| `docs/cli-ux/cli-ux-spec.md` | `migrate-with-changes` | `docs/cli-ux/`; #5, #12, #21, #22, #29 | Remove or explicitly mark commands and flags that remain unimplemented. |
+| `docs/architecture/architecture.md` | `migrate-with-changes` | `docs/architecture/`; #4, #8, #12, #13, #19, #20, #28 | Verify module boundaries against the implementation delivered by #4–#13. |
+| `docs/architecture/tech-selection.md` | `migrate-with-changes` | `docs/architecture/`; #4, #8, #19, #23 | Revalidate Rust/MSRV and Docker/Podman support claims. |
+| `docs/cli-ux/cli-ux-spec.md` | `migrate-with-changes` | `docs/cli-ux/`; #5, #12, #21, #22, #26, #29 | Remove or explicitly mark commands and flags that remain unimplemented. |
 | `docs/security-design-cli-injection.md` | `migrate-with-changes` | `docs/security/`; #5–#12 | Security review against the final argument-array and validation implementation. |
-| `docs/security-design-docker-socket.md` | `migrate-with-changes` | `docs/security/`; #7, #9, #18 | Recheck socket aliases, rootless runtimes, and macOS canonicalization. |
+| `docs/security-design-docker-socket.md` | `migrate-with-changes` | `docs/security/`; #7, #9, #18, #20 | Recheck socket aliases, rootless runtimes, and macOS canonicalization. |
 | `docs/security/stride-threat-model.md` | `migrate-with-changes` | `docs/security/`; #7–#12, #18, #24–#26 | Update mitigations and residual risks after the owning implementations land. |
 | `src/main.rs`, `src/lib.rs` | `migrate-with-changes` | #4 | Restore only the minimal crate entry points and current module skeleton. |
-| `src/cli/**` | `migrate-with-changes` | #5, #12, #14, #15, #21, #22, #29 | Split by command owner; remove parse-only or silent no-op behavior. |
+| `src/cli/**` | `migrate-with-changes` | #5, #11–#15, #21, #22, #25–#27, #29 | Split by command owner; remove parse-only or silent no-op behavior. |
 | `src/config/**` | `migrate-with-changes` | #6 | Add trust confirmation, size limits, strict validation, and safe merge behavior. |
 | `src/security/**` | `migrate-with-changes` | #7, #9 | Reconcile audit findings; do not weaken mandatory hardening through config. |
-| `src/engine/**` | `migrate-with-changes` | #8, #19, #20 | Preserve argument-array execution; separately review Podman and DinD boundaries. |
+| `src/engine/**` | `migrate-with-changes` | #8, #9, #19, #20 | Preserve argument-array execution; separately review Podman and DinD boundaries. |
 | `src/adapter/**` | `migrate-with-changes` | #10, #25, #26, #27 | Rework credential, image-prerequisite, host-context, and version handling. |
 | `src/session/**` | `migrate-with-changes` | #13, #16, #29 | Validate lifecycle, crash recovery, ambiguity, and resume behavior. |
 | `src/sync/**` | `migrate-with-changes` | #14–#17, #24 | Fix binary handling and retain approval and sensitive-path gates. |
 | `src/team/**` | `migrate-with-changes` | #22 | Await the human-approved workspace model before implementation. |
 | `tests/integration/mod.rs` | `migrate-with-changes` | #4, #18 | Keep a test target in the skeleton; adapt modules as features land. |
 | `tests/integration/security_test.rs` | `migrate-with-changes` | #18 | Revalidate every security assertion and separate daemon-dependent tests. |
-| `tests/integration/sync_test.rs` | `migrate-with-changes` | #14, #15, #17, #24, #28 | Retain platform-specific path coverage and add binary-safe cases. |
+| `tests/integration/sync_test.rs` | `migrate-with-changes` | #14–#17, #24, #28 | Retain platform-specific path coverage and add binary-safe cases. |
 | `seccomp/default.json` | `migrate-with-changes` | #9, #18 | Validate JSON and policy semantics; define how the profile is distributed and enabled. |
 | `.github/workflows/ci.yml` | `migrate-with-changes` | #3, #4 | Recreate from current quality gates; allow only `push` and `pull_request` triggers. |
-| `.github/workflows/security.yml` | `migrate-with-changes` | #3, #18 | Do not copy wholesale. The legacy file currently has no schedule, but migration must still reject every `schedule`/`cron` trigger and revalidate all commands. |
+| `.github/workflows/security.yml` | `migrate-with-changes` | #3, #18 | Do not copy wholesale. The legacy workflow previously included a weekly schedule; that trigger has been removed from the current local reference. Migration must not reintroduce any `schedule`/`cron` trigger and must revalidate all commands. |
 | `Cargo.toml`, `Cargo.lock` | `migrate-with-changes` | #4 | Audit crate metadata and dependencies; set and test the Rust 1.85 MSRV. |
 | `.gitignore`, `rustfmt.toml`, `clippy.toml`, `deny.toml` | `migrate-with-changes` | #4 | Restore current quality/security policy without local-only patterns. |
-| `cage.toml.example` | `migrate-with-changes` | #6 | Match the current schema and exclude hardening-bypass or secret-bearing examples. |
+| `cage.toml.example` | `migrate-with-changes` | #6, #10 | Match the current schema and exclude hardening-bypass or secret-bearing examples. |
 
 ## Explicit exclusions
 
