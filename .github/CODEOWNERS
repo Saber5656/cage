@@ -1,0 +1,10 @@
+# Default owner for repository changes.
+* @Saber5656
+
+# Repository automation and ownership policy.
+/.github/ @Saber5656
+
+# Security policy and security-sensitive implementation.
+/SECURITY.md @Saber5656
+/seccomp/ @Saber5656
+/src/security/ @Saber5656
