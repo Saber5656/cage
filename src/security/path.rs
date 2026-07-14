@@ -86,7 +86,7 @@ impl PathPolicy {
     }
 
     fn blocked_roots(&self) -> Vec<PathBuf> {
-        let mut roots = [
+        let mut protected = [
             "/var/run/docker.sock",
             "/run/docker.sock",
             "/var/run/docker",
@@ -97,19 +97,28 @@ impl PathPolicy {
             "/run/podman",
         ]
         .into_iter()
-        .map(canonicalize_if_present)
+        .map(PathBuf::from)
         .collect::<Vec<_>>();
 
         if let Some(home) = &self.home_dir {
-            roots.push(canonicalize_if_present(home.join(".docker")));
-            roots.push(canonicalize_if_present(home.join(".config/containers")));
+            protected.push(home.join(".docker"));
+            protected.push(home.join(".config/containers"));
         }
         if let Some(runtime) = &self.xdg_runtime_dir {
-            roots.push(canonicalize_if_present(runtime.join("docker.sock")));
-            roots.push(canonicalize_if_present(runtime.join("docker")));
-            roots.push(canonicalize_if_present(runtime.join("podman")));
-            roots.push(canonicalize_if_present(runtime.join("containerd")));
-            roots.push(canonicalize_if_present(runtime.join("containerd-rootless")));
+            protected.push(runtime.join("docker.sock"));
+            protected.push(runtime.join("docker"));
+            protected.push(runtime.join("podman"));
+            protected.push(runtime.join("containerd"));
+            protected.push(runtime.join("containerd-rootless"));
+        }
+
+        let mut roots = Vec::with_capacity(protected.len() * 2);
+        for path in protected {
+            let resolved = canonicalize_if_present(&path);
+            roots.push(path);
+            if !roots.contains(&resolved) {
+                roots.push(resolved);
+            }
         }
         roots
     }
