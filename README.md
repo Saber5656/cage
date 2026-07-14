@@ -20,6 +20,12 @@ The repository currently contains design and implementation-planning material.
 Code and security controls will be introduced incrementally and reviewed
 through pull requests.
 
+## Repository and migration status
+
+This repository, `Saber5656/cage`, is the canonical public source and working
+repository for Cage. See the [migration inventory](docs/migration/inventory.md)
+for the staged migration scope from the legacy `cage-demo` project.
+
 ## Security
 
 Please do not open public issues for suspected vulnerabilities. Follow the
