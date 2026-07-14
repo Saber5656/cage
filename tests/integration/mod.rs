@@ -84,6 +84,20 @@ mod cli {
     }
 
     #[test]
+    fn no_color_applies_to_clap_help_and_errors() {
+        cage()
+            .args(["--no-color", "--help"])
+            .assert()
+            .success()
+            .stdout(predicate::str::contains('\u{1b}').not());
+        cage()
+            .args(["--no-color", "unknown-command"])
+            .assert()
+            .code(1)
+            .stderr(predicate::str::contains('\u{1b}').not());
+    }
+
+    #[test]
     fn every_top_level_command_uses_the_general_unimplemented_exit_code() {
         for args in [
             &["run"][..],
