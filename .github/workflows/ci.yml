@@ -20,6 +20,10 @@ jobs:
         uses: dtolnay/rust-toolchain@4be7066ada62dd38de10e7b70166bc74ed198c30 # stable
         with:
           components: clippy, rustfmt
+      - name: Check workflow trigger policy
+        run: ruby scripts/check-workflow-triggers.rb
+      - name: Test workflow trigger guard
+        run: ruby scripts/check_workflow_triggers_test.rb
       - name: Check formatting
         run: cargo fmt --all -- --check
       - name: Run Clippy
