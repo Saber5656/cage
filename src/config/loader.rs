@@ -328,11 +328,10 @@ fn override_option<T>(base: &mut Option<T>, project: Option<T>) {
 }
 
 fn validate(config: &CageConfig) -> Result<(), ConfigError> {
-    if let Some(runtime) = &config.environment.runtime
-        && runtime != "docker"
-        && runtime != "podman"
-    {
-        return invalid("environment.runtime", "expected 'docker' or 'podman'");
+    if let Some(runtime) = &config.environment.runtime {
+        if runtime != "docker" && runtime != "podman" {
+            return invalid("environment.runtime", "expected 'docker' or 'podman'");
+        }
     }
 
     for (name, profile) in &config.profiles {
@@ -340,13 +339,13 @@ fn validate(config: &CageConfig) -> Result<(), ConfigError> {
         if let Some(image) = &profile.image {
             validate_image(&format!("profiles.{name}.image"), image)?;
         }
-        if let Some(memory) = &profile.memory
-            && !valid_memory(memory)
-        {
-            return invalid(
-                &format!("profiles.{name}.memory"),
-                "expected a positive integer with an optional b, k, m, g, or t suffix",
-            );
+        if let Some(memory) = &profile.memory {
+            if !valid_memory(memory) {
+                return invalid(
+                    &format!("profiles.{name}.memory"),
+                    "expected a positive integer with an optional b, k, m, g, or t suffix",
+                );
+            }
         }
         if let Some(cpus) = &profile.cpus {
             let parsed = cpus.parse::<f64>().ok();
@@ -398,10 +397,10 @@ fn validate(config: &CageConfig) -> Result<(), ConfigError> {
         }
     }
 
-    if let Some(profile) = &config.defaults.profile
-        && !config.profiles.contains_key(profile)
-    {
-        return Err(ConfigError::UnknownProfile(profile.clone()));
+    if let Some(profile) = &config.defaults.profile {
+        if !config.profiles.contains_key(profile) {
+            return Err(ConfigError::UnknownProfile(profile.clone()));
+        }
     }
     if let Some(patterns) = &config.sync.include {
         validate_patterns("sync.include", patterns)?;
