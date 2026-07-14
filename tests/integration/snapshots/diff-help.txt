@@ -1,0 +1,13 @@
+Display sandbox changes without applying them
+
+Usage: cage diff [OPTIONS]
+
+Options:
+      --session <ID>          Session identifier
+  -v, --verbose               Show detailed progress and diagnostic output
+      --container <ID>        Container identifier
+      --no-color              Disable ANSI color output
+      --from-volume <SOURCE>  Recover changes from a session workspace or volume
+      --dir <PATH>            Host project directory [default: .]
+  -U, --unified <LINES>       Number of context lines in unified output [default: 3]
+  -h, --help                  Print help
