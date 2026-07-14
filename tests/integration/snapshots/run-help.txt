@@ -1,0 +1,27 @@
+Run an AI agent inside a sandboxed container
+
+Usage: cage run [OPTIONS] [AGENT_OR_PROFILE] [-- <AGENT_ARGS>...]
+
+Arguments:
+  [AGENT_OR_PROFILE]  Agent name or profile. Uses the configured default when omitted
+  [AGENT_ARGS]...     Arguments passed unchanged to the agent after `--`
+
+Options:
+      --dir <PATH>               Project directory [default: .]
+  -v, --verbose                  Show detailed progress and diagnostic output
+      --config <PATH>            Project configuration file
+      --no-color                 Disable ANSI color output
+      --rebuild                  Rebuild the agent image before starting
+      --no-cache                 Disable the image build cache. Requires --rebuild when implemented
+      --continue                 Continue the most recent compatible session
+      --memory <SIZE>            Container memory limit, such as 4g or 512m
+      --gpus <SPEC>              GPU request, such as all or device=0
+      --agent-version <VERSION>  Pin the agent package version
+      --podman                   Use Podman instead of Docker
+      --dind                     Enable the Docker-in-Docker sidecar
+      --with-ssh                 Forward the host SSH agent socket
+      --with-hooks               Copy approved host hooks into the sandbox
+      --cleanup                  Remove the container after the run finishes
+      --dry-run                  Show the planned run without creating a container
+  -h, --help                     Print help
+  -V, --version                  Print version

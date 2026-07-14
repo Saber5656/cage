@@ -1,0 +1,19 @@
+A universal sandbox CLI tool for safely running any AI coding agent
+
+Usage: cage [OPTIONS] <COMMAND>
+
+Commands:
+  run     Run an AI agent inside a sandboxed container
+  sync    Review and apply sandbox changes to the host
+  diff    Display sandbox changes without applying them
+  team    Manage agent teams
+  config  Manage Cage configuration
+  images  Manage agent container images
+  update  Update Cage
+  help    Print this message or the help of the given subcommand(s)
+
+Options:
+  -v, --verbose   Show detailed progress and diagnostic output
+      --no-color  Disable ANSI color output
+  -h, --help      Print help
+  -V, --version   Print version

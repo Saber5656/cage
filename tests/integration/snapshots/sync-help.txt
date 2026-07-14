@@ -1,0 +1,17 @@
+Review and apply sandbox changes to the host
+
+Usage: cage sync [OPTIONS]
+
+Options:
+      --session <ID>          Session identifier
+  -v, --verbose               Show detailed progress and diagnostic output
+      --container <ID>        Container identifier
+      --no-color              Disable ANSI color output
+      --from-volume <SOURCE>  Recover changes from a session workspace or volume
+      --dir <PATH>            Host project directory [default: .]
+      --file <PATH>           Limit synchronization to a relative path
+      --team                  Synchronize team output when team support is available
+      --auto                  Apply all accepted changes without interactive prompts
+      --force                 Proceed after an explicit destructive-operation opt-in
+  -h, --help                  Print help
+  -V, --version               Print version
