@@ -64,6 +64,26 @@ mod cli {
     }
 
     #[test]
+    fn version_is_available_on_direct_and_nested_subcommands() {
+        cage()
+            .args(["run", "--version"])
+            .assert()
+            .success()
+            .stdout(predicate::eq(format!(
+                "cage-run {}\n",
+                env!("CARGO_PKG_VERSION")
+            )));
+        cage()
+            .args(["team", "up", "--version"])
+            .assert()
+            .success()
+            .stdout(predicate::eq(format!(
+                "cage-team-up {}\n",
+                env!("CARGO_PKG_VERSION")
+            )));
+    }
+
+    #[test]
     fn every_top_level_command_uses_the_general_unimplemented_exit_code() {
         for args in [
             &["run"][..],

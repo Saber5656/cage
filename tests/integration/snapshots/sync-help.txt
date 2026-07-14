@@ -14,3 +14,4 @@ Options:
       --auto                  Apply all accepted changes without interactive prompts
       --force                 Proceed after an explicit destructive-operation opt-in
   -h, --help                  Print help
+  -V, --version               Print version

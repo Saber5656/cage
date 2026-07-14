@@ -11,3 +11,4 @@ Options:
       --dir <PATH>            Host project directory [default: .]
   -U, --unified <LINES>       Number of context lines in unified output [default: 3]
   -h, --help                  Print help
+  -V, --version               Print version

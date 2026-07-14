@@ -12,7 +12,7 @@ use self::error::CageError;
 
 /// A universal sandbox CLI tool for safely running any AI coding agent.
 #[derive(Debug, Parser)]
-#[command(name = "cage", version, about)]
+#[command(name = "cage", version, about, propagate_version = true)]
 pub struct Cli {
     /// Show detailed progress and diagnostic output.
     #[arg(short, long, global = true)]

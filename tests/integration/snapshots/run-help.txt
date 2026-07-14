@@ -24,3 +24,4 @@ Options:
       --cleanup                  Remove the container after the run finishes
       --dry-run                  Show the planned run without creating a container
   -h, --help                     Print help
+  -V, --version                  Print version
