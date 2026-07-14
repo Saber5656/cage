@@ -1,0 +1,41 @@
+# cage.toml — project or global Cage configuration
+# Global: ~/.config/cage/cage.toml
+# Project: ./cage.toml (field-level overrides)
+#
+# Project configuration is treated as untrusted input. Cage displays the merged
+# effective settings and requires approval on first use and after content changes.
+
+[environment]
+# Omit to auto-detect. Supported explicit values: "docker" or "podman".
+runtime = "docker"
+
+[defaults]
+profile = "claude"
+agent = "claude"
+
+[profiles.claude]
+image = "node:20"
+memory = "4g"
+cpus = "2.0"
+# Names only. Never place credential values in this file.
+env = ["ANTHROPIC_API_KEY"]
+gpus = []
+with_hooks = false
+dind = false
+
+[profiles.codex]
+image = "node:20"
+memory = "4g"
+cpus = "2.0"
+env = ["OPENAI_API_KEY"]
+
+[sync]
+include = ["src/**", "tests/**", "Cargo.toml"]
+exclude = ["target/**", "node_modules/**", ".env"]
+
+# Custom adapters are resolved by Issue #10.
+# [adapters.example]
+# image = "node:20"
+# command = ["example-agent"]
+# env = ["EXAMPLE_API_KEY"]
+# config_files = [".example/settings.toml"]
